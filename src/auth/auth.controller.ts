@@ -7,14 +7,12 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('/signup')
-  signUp(
-    @Body(ValidationPipe) authCredentialsDto: AuthCredentailsDto
-  ): Promise<void> {
+  signUp(@Body(ValidationPipe) authCredentialsDto: AuthCredentailsDto): Promise<void> {
     return this.authService.signUp(authCredentialsDto);
   }
 
   @Post('/signin')
-  signIn(@Body(ValidationPipe) authCredentailsDto: AuthCredentailsDto) {
+  signIn(@Body(ValidationPipe) authCredentailsDto: AuthCredentailsDto): Promise<{ accessToken: string }> {
     return this.authService.signIn(authCredentailsDto);
   }
 }
