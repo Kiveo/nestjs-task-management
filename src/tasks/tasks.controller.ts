@@ -18,15 +18,17 @@ import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipe';
 import { Task } from './task.entity';
 import { DeleteResult } from 'typeorm';
 import { TaskStatus } from './task-status.enum';
+import { User } from 'src/auth/user.entity';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('tasks')
+@UseGuards(AuthGuard())
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
-  getTasks(
-    @Query(ValidationPipe) filterDto: GetTasksFilterDto
-  ): Promise<Task[]> {
+  getTasks(@Query(ValidationPipe) filterDto: GetTasksFilterDto): Promise<Task[]> {
     return this.tasksService.getTasks(filterDto);
   }
 
