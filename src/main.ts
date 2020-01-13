@@ -6,12 +6,14 @@ import * as config from 'config';
 async function bootstrap() {
   const logger = new Logger('boostrap');
   const app = await NestFactory.create(AppModule);
-
-  if (process.env.NODE_ENV === 'development') {
-    app.enableCors();
-  }
-
   const serverConfig = config.get('server');
+
+  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'dev') {
+    logger.log('Dev mode detected');
+    app.enableCors();
+  } else {
+    app.enableCors({ origin: serverConfig.origin });
+  }
 
   const port = process.env.PORT || serverConfig.port;
   await app.listen(port);
